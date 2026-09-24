@@ -21,6 +21,15 @@ public class WordSearch {
 		// Implement the rest of this method starting from here!
 
         HashMap<String, Set<String>> database = new HashMap<>();
+        database.put("banana", new HashSet<>(List.of("file1.txt", "file2.txt" , "file3.txt")));
+        database.put("apple", new HashSet<>(List.of("file2.txt")));
+        database.put("monkey", new HashSet<>(List.of("file1.txt", "file2.txt")));
+        database.put("cat", new HashSet<>(List.of("file1.txt", "file2.txt" , "file3.txt")));
+        database.put("grapefruit", new HashSet<>(List.of("file1.txt")));
+        database.put("peach", new HashSet<>(List.of("file3.txt")));
+        database.put("bear", new HashSet<>(List.of("file2.txt")));
+        database.put("dog", new HashSet<>(List.of("file2.txt" , "file3.txt")));
+
 
 		// this is for debugging, just to make sure it's reading the right files
         for (File file : files) {
@@ -39,7 +48,7 @@ public class WordSearch {
 	
 	public static void main(String[] args) {
 		Map<String, Set<String>> map = buildMap(args[0]);
-		//System.out.println(map); 					// for debugging purposes
+		System.out.println(map); 					// for debugging purposes
 		
 		System.out.print("Enter a term to search for: ");
 		
