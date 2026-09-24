@@ -41,9 +41,28 @@ public class WordSearch {
 	}
 	
 	public static List<String> search(String[] terms, Map<String, Set<String>> map) {
-		// Implement this method starting from here!
+		// Implement the Raking system!
 
-		return Collections.EMPTY_LIST; // change this as necessary
+        List<String> result = new ArrayList<>();
+
+        Set<String> seen = new HashSet<>();
+
+        for(String word: terms)
+        {
+            if(map.get(word) != null) {
+                List<String> temp = new ArrayList<>(map.get(word));
+                for(String element: temp)
+                {
+                    if(!seen.contains(element)){
+                        result.add(element);
+                        seen.add(element);
+                    }
+                }
+
+            }
+        }
+
+		return result; // change this as necessary
 	}
 	
 	public static void main(String[] args) {
