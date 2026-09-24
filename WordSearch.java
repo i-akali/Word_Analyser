@@ -20,12 +20,14 @@ public class WordSearch {
 		
 		// Implement the rest of this method starting from here!
 
+        HashMap<String, Set<String>> database = new HashMap<>();
+
 		// this is for debugging, just to make sure it's reading the right files
         for (File file : files) {
             System.out.println(file.getName());
         }
 		
-		return Collections.EMPTY_MAP; // change this as necessary
+		return database; // change this as necessary
 		
 	}
 	
