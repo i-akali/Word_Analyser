@@ -27,7 +27,7 @@ public class WordSearch {
         database.put("cat", new HashSet<>(List.of("file1.txt", "file2.txt" , "file3.txt")));
         database.put("grapefruit", new HashSet<>(List.of("file1.txt")));
         database.put("peach", new HashSet<>(List.of("file3.txt")));
-        database.put("bear", new HashSet<>(List.of("file2.txt")));
+        database.put("bear", new HashSet<>(List.of("file3.txt")));
         database.put("dog", new HashSet<>(List.of("file2.txt" , "file3.txt")));
 
 
@@ -44,23 +44,34 @@ public class WordSearch {
 		// Implement the Raking system!
 
         List<String> result = new ArrayList<>();
+        //Keep track of file appearances.
+        HashMap<String, Integer> count = new HashMap<>();
 
-        Set<String> seen = new HashSet<>();
-
-        for(String word: terms)
-        {
+        for(String word: terms) {
             if(map.get(word) != null) {
                 List<String> temp = new ArrayList<>(map.get(word));
-                for(String element: temp)
-                {
-                    if(!seen.contains(element)){
-                        result.add(element);
-                        seen.add(element);
+                for(String element: temp) {
+                    if(!count.containsKey(element)){
+                        count.put(element, 1);
+                    }else{
+                        int num = count.get(element);
+                        count.remove(element);
+                        count.put(element, num+1);
                     }
                 }
-
             }
         }
+
+        int matches = terms.length;
+            for(int i = matches; matches > 0 ; matches--) {
+                List<String> done = new ArrayList<>();
+                for(String key: count.keySet()) {
+                    int num = count.get(key);
+                    if(num == matches) {done.add(key);}
+                }
+                Collections.sort(done); // Sort lexicographically
+                result.addAll(done);
+            }
 
 		return result; // change this as necessary
 	}
