@@ -20,7 +20,42 @@ public class Analyzer {
 		/*
 		 * Implement this method in Step 2
 		 */
-		return null;
+
+        if (sentences == null) {
+            return null;
+        }
+
+        Map<String, Double> wordTotalScores = new HashMap<>();
+        Map<String, Integer> wordCounts = new HashMap<>();
+
+        for (Sentence sentence : sentences) {
+            // Skip null or invalid sentences
+            if (sentence == null || sentence.getText() == null || sentence.getText().isEmpty() || Math.abs(sentence.getScore()) > 2) {
+                continue;
+            }
+
+            String text = sentence.getText().toLowerCase();
+            StringTokenizer tokenizer = new StringTokenizer(text);
+
+            while (tokenizer.hasMoreTokens()) {
+                String word = tokenizer.nextToken();
+
+                // Filter out words that don't start with a letter
+                if (Character.isLetter(word.charAt(0))) {
+                    wordTotalScores.put(word, wordTotalScores.getOrDefault(word, 0.0) + sentence.getScore());
+                    wordCounts.put(word, wordCounts.getOrDefault(word, 0) + 1);
+                }
+            }
+        }
+
+        // Calculate final averages: total score / total appearances
+        Map<String, Double> result = new HashMap<>();
+        for (String word : wordTotalScores.keySet()) {
+            double averageScore = wordTotalScores.get(word) / wordCounts.get(word);
+            result.put(word, averageScore);
+        }
+
+        return result;
 	}
 	
 	/**
@@ -37,7 +72,22 @@ public class Analyzer {
 		/*
 		 * Implement this method in Step 3
 		 */
-		return 0;
+        if(wordScores == null || sentence == null || sentence.isEmpty() || wordScores.isEmpty()) {
+            return 0;
+        }
+
+        double score = 0;
+        int count = 0;
+
+        sentence = sentence.toLowerCase();
+        StringTokenizer tokens = new StringTokenizer(sentence);
+        while (tokens.hasMoreTokens()) {
+            String word = tokens.nextToken();
+            if(!Character.isLetter(word.charAt(0))) {continue;}
+            score += wordScores.getOrDefault(word, 0.0);
+            count++;
+        }
+        return count == 0 ? 0 : score / count;
 	}
 
     /**
@@ -47,6 +97,16 @@ public class Analyzer {
      * Just use it for testing this class. It is not considered for grading.
      */
     public static void main(String[] args) {
+
+        Map<String, Double> scores = new HashMap<>();
+        scores.put("dogs", 1.5);
+        scores.put("are", 0.0);
+        scores.put("cute", 2.0);
+        double score = calculateSentenceScore(scores, "dogs are cute");
+        if (score != (3.5 / 3)) {
+            System.out.println("wrong score!");
+        }
+
 
     }
 
