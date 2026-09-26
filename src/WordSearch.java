@@ -21,14 +21,28 @@ public class WordSearch {
 		// Implement the rest of this method starting from here!
 
         HashMap<String, Set<String>> database = new HashMap<>();
-        database.put("banana", new HashSet<>(List.of("file1.txt", "file2.txt" , "file3.txt")));
-        database.put("apple", new HashSet<>(List.of("file2.txt")));
-        database.put("monkey", new HashSet<>(List.of("file1.txt", "file2.txt")));
-        database.put("cat", new HashSet<>(List.of("file1.txt", "file2.txt" , "file3.txt")));
-        database.put("grapefruit", new HashSet<>(List.of("file1.txt")));
-        database.put("peach", new HashSet<>(List.of("file3.txt")));
-        database.put("bear", new HashSet<>(List.of("file3.txt")));
-        database.put("dog", new HashSet<>(List.of("file2.txt" , "file3.txt")));
+
+        if (files == null) {
+            return database;
+        }
+
+        for (File file : files) {
+            // Skip subdirectories if any exist
+            if (file.isDirectory()) {
+                continue;
+            }
+
+            try (Scanner scanner = new Scanner(file)) {
+                while (scanner.hasNext()) {
+                    String word = scanner.next().toLowerCase();
+
+                    // Ensure word entry exists in map and add file name
+                    database.computeIfAbsent(word, k -> new HashSet<>()).add(file.getName());
+                }
+            } catch (FileNotFoundException e) {
+                // Handle or skip unreadable files
+            }
+        }
 
 
 		// this is for debugging, just to make sure it's reading the right files
@@ -44,10 +58,16 @@ public class WordSearch {
 		// Implement the Raking system!
 
         List<String> result = new ArrayList<>();
+
+        if (terms == null || terms.length == 0 || map == null || map.isEmpty()) {
+            return result;
+        }
+
         //Keep track of file appearances.
         HashMap<String, Integer> count = new HashMap<>();
 
         for(String word: terms) {
+            word = word.toLowerCase();
             if(map.get(word) != null) {
                 List<String> temp = new ArrayList<>(map.get(word));
                 for(String element: temp) {
@@ -63,11 +83,11 @@ public class WordSearch {
         }
 
         int matches = terms.length;
-            for(int i = matches; matches > 0 ; matches--) {
+            for(int i = matches; i > 0 ; i--) {
                 List<String> done = new ArrayList<>();
                 for(String key: count.keySet()) {
                     int num = count.get(key);
-                    if(num == matches) {done.add(key);}
+                    if(num == i) {done.add(key);}
                 }
                 Collections.sort(done); // Sort lexicographically
                 result.addAll(done);

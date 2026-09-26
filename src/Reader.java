@@ -25,6 +25,10 @@ public class Reader {
          * Implement this method in Step 1
          */
 
+        if(filename == null)
+        {
+            return null;
+        }
         BufferedReader reader;
         Set<Sentence> reviews = new HashSet<>();
 

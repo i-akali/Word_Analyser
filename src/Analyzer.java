@@ -98,14 +98,14 @@ public class Analyzer {
      */
     public static void main(String[] args) {
 
-        Map<String, Double> scores = new HashMap<>();
-        scores.put("dogs", 1.5);
-        scores.put("are", 0.0);
-        scores.put("cute", 2.0);
-        double score = calculateSentenceScore(scores, "dogs are cute");
-        if (score != (3.5 / 3)) {
-            System.out.println("wrong score!");
+        Set<Sentence> sentences = new HashSet<>();
+        sentences.add(new Sentence(1, "I like dogs dogs"));
+        Map<String, Double> scores = calculateWordScores(sentences);
+        if (scores.get("dogs") != 1) {
+            System.out.println("wrong score for dogs!");
+            System.out.println(scores);
         }
+
 
 
     }
